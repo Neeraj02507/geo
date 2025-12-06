@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Detailed Notes — SWRC & Unsaturated Soil Mechanics</title>
+
+<style>
+  :root{
+    --bg1:#e6f7ff;
+    --bg2:#e8fff0;
+    --card:#ffffff;
+    --accent1:#0b8fb7;
+    --accent2:#2bb99b;
+    --text:#0b3740;
+    --muted:#3b5a57;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(11,55,50,0.07);
+  }
+/* page */
+  html,body{height:100%; margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:var(--text); background: linear-gradient(180deg,var(--bg1),var(--bg2)); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  .wrap{max-width:1400px; margin:8px auto; padding:10px;}
+/* toc */
+  .toc{margin:12px 0 22px 0; display:flex; gap:10px; flex-wrap:wrap;}
+  .toc a{background:linear-gradient(90deg, rgba(11,143,183,0.12), rgba(43,185,155,0.12)); color:var(--accent1); padding:8px 12px; border-radius:999px; text-decoration:none; font-weight:600; font-size:0.9rem; border:1px solid rgba(11,143,183,0.06);}
+
+  /* card */
+  .card{background:var(--card); border-radius:var(--radius); padding:16px 18px; margin:16px 0; box-shadow:var(--shadow); border:1px solid rgba(6,84,72,0.03);}
+  .card h2{margin:0 0 8px 0; color:var(--accent2);}
+  .card h3{margin:8px 0 6px 0; color:var(--accent1);}
+  .muted{color:var(--muted); font-size:0.95rem;}
+
+  /* tables */
+  table{width:100%; border-collapse:collapse; margin-top:12px; font-size:0.95rem;}
+  table th, table td{padding:8px 10px; border:1px solid rgba(7,80,72,0.05); text-align:left;}
+  table thead th{background:linear-gradient(90deg, rgba(11,143,183,0.08), rgba(43,185,155,0.06)); color:var(--accent1); font-weight:700;}
+
+  /* code/equation */
+  pre.equation, .equation{background:#f6fffb; padding:10px; border-radius:8px; border:1px solid rgba(11,143,183,0.06); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; color:#064b47; overflow:auto;}
+
+  /* info box */
+  .info{background:linear-gradient(90deg,#fff8e0,#f7fff0); padding:10px; border-left:6px solid #f0b400; border-radius:8px; color:#2d3f2f; margin-top:10px;}
+
+  /* lists & sections */
+  ul{margin:8px 0 8px 18px;}
+  ol{margin:8px 0 8px 18px;}
+  .small{font-size:0.9rem; color:var(--muted);}
+
+  /* footer */
+  footer{margin:32px 0 80px; text-align:center; color:var(--muted); font-size:0.95rem;}
+
+  /* responsive */
+  @media (max-width:760px){
+    .wrap{padding:12px;}
+    .brand-title img{width:56px;height:56px;}
+    h1{font-size:1.3rem;}
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- Quick TOC (no sidebar) -->
+    <nav class="toc" aria-label="Quick links">
+      <a href="#intro">Intro</a>
+      <a href="#suction">Soil suction</a>
+      <a href="#swrc">SWRC</a>
+      <a href="#models">Models</a>
+      <a href="#vg">Van Genuchten</a>
+      <a href="#hysteresis">Hysteresis</a>
+      <a href="#meas">Measurement</a>
+      <a href="#hydraulic">Hydraulic cond.</a>
+      <a href="#effective">Effective stress</a>
+      <a href="#applications">Applications</a>
+      <a href="#case">Case studies</a>
+    </nav>
+
+    <!-- 1 INTRO -->
+    <section id="intro" class="card">
+      <h2>1. Introduction</h2>
+      <p class="muted">Unsaturated soils have pores partially filled with water and air. Their mechanical and hydraulic behavior depends on suction, water content and the pore structure. The <strong>Soil–Water Retention Curve (SWRC)</strong> — θ = f(ψ) — is the fundamental relation that quantifies how volumetric water content (θ) varies with suction (ψ).</p>
+
+      <p>Uses: design & analysis in geotechnical engineering (slope stability, bearing capacity), environmental engineering (landfills, contaminant transport), hydrology (infiltration, recharge), and agriculture (irrigation scheduling).</p>
+    </section>
+
+    <!-- 2 SUCTION -->
+    <section id="suction" class="card">
+      <h2>2. Soil Suction — Concept & Components</h2>
+
+      <h3>2.1 Physical meaning</h3>
+      <p class="muted">Suction is an energy potential difference causing water to be retained in pores. It increases as the soil dries and acts opposite to gravity.</p>
+
+      <h3>2.2 Types</h3>
+      <ul>
+        <li><strong>Matric suction (ψ<sub>m</sub>)</strong> — due to capillary and adsorptive forces; most important in soils. ψ<sub>m</sub> = u<sub>a</sub> − u<sub>w</sub>.</li>
+        <li><strong>Osmotic suction (ψ<sub>o</sub>)</strong> — due to solutes; important in saline soils or leachates.</li>
+        <li><strong>Total suction</strong> — ψ = ψ<sub>m</sub> + ψ<sub>o</sub>.</li>
+      </ul>
+
+      <h3>2.3 Units & typical ranges</h3>
+      <p class="small">Suction is commonly reported in kPa (or m of water). Typical ranges: 0–2000 kPa for many soil applications; tens to hundreds of kPa for field conditions; >1000 kPa corresponds to strongly bound water.</p>
+    </section>
+
+    <!-- 3 SWRC -->
+    <section id="swrc" class="card">
+      <h2>3. Soil–Water Retention Curve (SWRC)</h2>
+
+      <h3>3.1 Definition & shape</h3>
+      <p class="muted">SWRC describes volumetric water content θ as a function of suction ψ (or matric head h). Key shape features:</p>
+      <ul>
+        <li><strong>Saturation plateau</strong> near ψ ≈ 0 (θ ≈ θ<sub>s</sub>).</li>
+        <li><strong>Transition/air entry zone</strong> where θ falls steeply.</li>
+        <li><strong>Residual plateau</strong> where θ ≈ θ<sub>r</sub> at high suctions.</li>
+      </ul>
+
+      <h3>3.2 Physical interpretation</h3>
+      <p>Large pores empty first (drain under low suction) — controls steepness. Small pores and adsorbed films remain at high suction — control residual water.</p>
+
+      <h3>3.3 Important points on the curve</h3>
+      <ul>
+        <li><strong>Air-entry value (AEV)</strong> — suction at which desaturation begins.</li>
+        <li><strong>Field capacity</strong> — moisture after drainage by gravity (commonly at ψ ≈ 10–33 kPa depending on definition).</li>
+        <li><strong>Wilting point</strong> — plant-available water limit (ψ ≈ 1500 kPa commonly used).</li>
+      </ul>
+    </section>
+
+    <!-- 4 FACTORS -->
+    <section class="card">
+      <h2>4. Factors affecting SWRC & suction</h2>
+      <table>
+        <thead><tr><th>Factor</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Soil texture</td><td>Finer soils (clays) → higher θ<sub>r</sub>, higher suction, flatter curve.</td></tr>
+          <tr><td>Pore-size distribution</td><td>Wide PSD → smoother curve; uniform PSD → steeper transition.</td></tr>
+          <tr><td>Fabric / structure</td><td>Aggregation creates macropores which change AEV and retention.</td></tr>
+          <tr><td>Compaction / density</td><td>Higher density → smaller pores → higher suction for same θ.</td></tr>
+          <tr><td>Mineralogy</td><td>Clay minerals (smectite) adsorb more water → higher residuals and hysteresis.</td></tr>
+          <tr><td>Salinity</td><td>Increases osmotic suction → shifts SWRC.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5 MODELS -->
+    <section id="models" class="card">
+      <h2>5. Empirical & analytical models for SWRC</h2>
+      <p class="muted">Common models used to fit SWRC data:</p>
+      <ul>
+        <li><strong>van Genuchten (1980)</strong> — flexible 4-parameter model, widely used.</li>
+        <li><strong>Brooks-Corey (1964)</strong> — simpler, power-law type useful for coarse soils.</li>
+        <li><strong>Fredlund–Xing</strong> — capable of fitting extremes and residual better; used in geotechnical contexts.</li>
+      </ul>
+
+      <h3>Brooks–Corey</h3>
+      <div class="equation">θ(ψ) = θ<sub>s</sub>(ψ/ψ<sub>b</sub>)<sup>-λ</sup>  for ψ > ψ<sub>b</sub> (ψ<sub>b</sub> = air-entry)</div>
+
+      <h3>Fredlund–Xing (brief)</h3>
+      <p>More parameters to fit both wet & dry ends and to model hysteresis. Commonly used in geotechnical modeling of suction-dependent shear strength.</p>
+    </section>
+
+    <!-- 6 van genuchten -->
+    <section id="vg" class="card">
+      <h2>6. Van Genuchten model — details & fitting</h2>
+      <div class="equation">
+        θ(h) = θ<sub>r</sub> + (θ<sub>s</sub> − θ<sub>r</sub>) / [1 + (α h)<sup>n</sup> ]<sup>m</sup> ,  m = 1 − 1/n
+      </div>
+
+      <h3>Parameter roles (recap)</h3>
+      <ul>
+        <li><strong>θs</strong> — saturated water content (porosity).</li>
+        <li><strong>θr</strong> — residual water content.</li>
+        <li><strong>α</strong> — related to AEV; 1/α ≈ characteristic suction (kPa).</li>
+        <li><strong>n</strong> — controls pore-size distribution and slope.</li>
+        <li><strong>m</strong> — shape parameter derived from n for simpler fitting.</li>
+      </ul>
+
+      <h3>Fitting procedure (practical)</h3>
+      <ol>
+        <li>Measure θ vs ψ data in lab (pressure plate, tensiometers, dewpoint, etc.).</li>
+        <li>Use non-linear least squares (Python `scipy.optimize.curve_fit`, Matlab `lsqcurvefit`) to estimate θr, θs, α, n (m = 1 − 1/n).</li>
+        <li>Check residuals & R²; if residual end poorly captured, consider Fredlund–Xing or adding θr constraint.</li>
+      </ol>
+
+      <h3>Goodness of fit</h3>
+      <p class="small">Report R², RMSE and parameter confidence intervals. Plot θ vs log(ψ) to visually inspect the fit across decades of suction.</p>
+    </section>
+
+    <!-- 7 HYSTERESIS -->
+    <section id="hysteresis" class="card">
+      <h2>7. Hysteresis in SWRC</h2>
+      <p class="muted">SWRC depends on wetting/drying history. The drying curve (desorption) and wetting curve (adsorption) form a hysteresis loop. Main causes: contact angle, ink-bottle pores, film flow and trapped air.</p>
+
+      <h3>Practical implications</h3>
+      <ul>
+        <li>Hydraulic conductivity differs on wetting vs drying.</li>
+        <li>Modeling infiltration after antecedent moisture requires hysteresis-aware models (e.g., Mualem-based with scanning curves).</li>
+      </ul>
+
+      <h3>Modeling approaches</h3>
+      <p>Use main drying & main wetting curves plus scanning rules (e.g., empirical scaling, domain decomposition) to simulate hysteresis.</p>
+    </section>
+
+    <!-- 8 MEASUREMENT -->
+    <section id="meas" class="card">
+      <h2>8. Measurement methods & laboratory equipment</h2>
+
+      <h3>Common lab methods</h3>
+      <ul>
+        <li><strong>Pressure plate apparatus</strong> — used for moderate to high suctions (tens to hundreds kPa).</li>
+        <li><strong>Pressure membrane (chamber)</strong> — for higher suctions (up to thousands of kPa) using axis-translation.</li>
+        <li><strong>Tensiometers</strong> — measure low suctions (0–80 kPa) with high accuracy.</li>
+        <li><strong>Dew point potentiameter</strong> — measures very high suctions via dew point (up to several MPa).</li>
+        <li><strong>Filter paper method</strong> — simple, low-cost hygrometric technique for certain ranges.</li>
+      </ul>
+
+      <h3>Typical testing steps (pressure plate)</h3>
+      <ol>
+        <li>Sample saturation & equilibration.</li>
+        <li>Apply suction step (apply pressure), wait for equilibrium water content.</li>
+        <li>Record θ at each applied suction to build θ(ψ) points.</li>
+      </ol>
+
+      <h3>Practical tips</h3>
+      <ul>
+        <li>Use sealed conditions to avoid evaporation during long equilibrations.</li>
+        <li>For disturbed samples, expect variability — test replicates.</li>
+        <li>Temperature control improves reproducibility (suction is temperature-dependent).</li>
+      </ul>
+    </section>
+
+    <!-- 9 HYDRAULIC CONDUCTIVITY -->
+    <section id="hydraulic" class="card">
+      <h2>9. Hydraulic conductivity & retention coupling</h2>
+
+      <h3>Unsaturated hydraulic conductivity k(θ) or k(ψ)</h3>
+      <p class="muted">k decreases as soil dries. Models combine SWRC with relative permeability functions to estimate k(θ) — e.g., Mualem–van Genuchten coupling.</p>
+
+      <div class="equation">k(θ) = k<sub>s</sub> · K<sub>rel</sub>(θ)</div>
+
+      <h3>Mualem–van Genuchten formulation (brief)</h3>
+      <p class="small">Relative permeability K<sub>rel</sub>(Se) is derived from integral expressions involving SWRC; the van Genuchten parameters feed directly into these relations, allowing computation of k(ψ).</p>
+
+      <h3>Practical use</h3>
+      <ul>
+        <li>Compute infiltration / Richards equation simulations using parameterized SWRC and k(θ).</li>
+        <li>Calibrate k<sub>s</sub> (saturated) from permeameter tests, then compute unsaturated k.</li>
+      </ul>
+    </section>
+
+    <!-- 10 EFFECTIVE STRESS -->
+    <section id="effective" class="card">
+      <h2>10. Effective stress in unsaturated soils</h2>
+
+      <h3>Classical concept</h3>
+      <p class="muted">For saturated soils: σ' = σ − u. For unsaturated soils, several definitions exist due to separate air and water pressures.</p>
+
+      <h3>Bishop's effective stress</h3>
+      <div class="equation">σ' = (σ − u<sub>a</sub>) + χ(ψ) · (u<sub>a</sub> − u<sub>w</sub>)</div>
+      <p>χ(ψ) is a weighting function (0 ≤ χ ≤ 1) often related to degree of saturation; χ approximates degree of saturation or other empirical functions.</p>
+
+      <h3>Implications</h3>
+      <ul>
+        <li>Shear strength increases with matric suction (up to a limit).</li>
+        <li>Strength models (e.g., extended Mohr–Coulomb) include suction term:  τ = c' + (σ − u<sub>a</sub>)·tanφ' + (u<sub>a</sub> − u<sub>w</sub>)·tanφ<sub>b</sub>.</li>
+      </ul>
+    </section>
+
+    <!-- 11 CONTAMINANT TRANSPORT LINK -->
+    <section id="applications" class="card">
+      <h2>11. Applications — contamination & vadose zone flow</h2>
+      <p class="muted">SWRC influences contaminant migration by controlling water content, flow paths, diffusion rates, and retention:</p>
+      <ul>
+        <li>Lower θ reduces advective transport but can increase diffusive retardation.</li>
+        <li>Retardation factor R depends on soil-water content via partition coefficients and θ.</li>
+        <li>Modeling requires coupling Richards' equation (unsaturated flow) with advection-dispersion-reactive transport.</li>
+      </ul>
+    </section>
+
+    <!-- 12 LANDSLIDES -->
+    <section class="card">
+      <h2>12. Slope stability & rainfall-triggered failures</h2>
+      <p class="muted">Rainfall infiltration increases pore-water pressures and reduces matric suction, reducing effective stress and shear strength; SWRC controls how quickly suction reduces for a given rainfall event.</p>
+
+      <h3>Modeling approach</h3>
+      <ol>
+        <li>Use SWRC + k(θ) to simulate infiltration (Richards equation).</li>
+        <li>Compute suction distribution and convert to effective stress.</li>
+        <li>Perform stability analysis (finite element / limit equilibrium) using time-varying suctions.</li>
+      </ol>
+    </section>
+
+    <!-- 13 LANDFILL -->
+    <section class="card">
+      <h2>13. Landfill liners, covers & evapotranspirative systems</h2>
+      <p class="muted">Design of compacted clay liners and evapotranspirative covers depends on retention properties. SWRC allows estimating infiltration reduction, long-term moisture content and gas transport characteristics.</p>
+
+      <h3>Key design role</h3>
+      <ul>
+        <li>Choose soil with appropriate θ(ψ) to minimize percolation.</li>
+        <li>Estimate long-term performance under wetting-drying cycles.</li>
+      </ul>
+    </section>
+
+    <!-- 14 AGRICULTURE -->
+    <section class="card">
+      <h2>14. Agricultural applications</h2>
+      <p class="muted">SWRC helps determine plant-available water (PAW = θ at field capacity − θ at wilting point), irrigation scheduling, and root-zone moisture dynamics.</p>
+      <h3>Definitions</h3>
+      <ul>
+        <li>Field capacity (~ψ = 10–33 kPa depending on convention)</li>
+        <li>Permanent wilting point (~ψ = 1500 kPa)</li>
+      </ul>
+    </section>
+
+    <!-- 15 NUMERICAL SIMULATION -->
+    <section class="card">
+      <h2>15. Numerical modeling: Richards' equation & coupling</h2>
+      <p class="muted">Richards' equation governs unsaturated flow:</p>
+      <div class="equation">∂θ/∂t = ∇·[k(θ) ∇(ψ + z)]</div>
+      <p>Requires k(θ) and θ(ψ) (SWRC) for closure. Solve using finite element or finite difference methods (e.g., COMSOL, HYDRUS, MODFLOW-Richards, custom Python implementations).</p>
+    </section>
+
+    <!-- 16 PARAMETER ESTIMATION -->
+    <section class="card">
+      <h2>16. Parameter estimation & data fitting</h2>
+      <p class="muted">Use non-linear regression to estimate α, n, θs, θr. Typical workflow:</p>
+      <ol>
+        <li>Collect θ(ψ) lab data (replicates across suction decades).</li>
+        <li>Use log-scale suction for fitting (ψ varies over orders of magnitude).</li>
+        <li>Constrain θs (porosity known) or θr (if measured) to ensure stable fits.</li>
+        <li>Report parameter standard errors, RMSE & R².</li>
+      </ol>
+    </section>
+
+    <!-- 17 PRACTICAL EXAMPLE -->
+    <section class="card">
+      <h2>17. Practical example — sandy loam (illustrative)</h2>
+      <p class="muted">Example measured points (ψ in kPa):</p>
+      <table>
+        <thead><tr><th>ψ (kPa)</th><th>θ</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0.43</td></tr>
+          <tr><td>10</td><td>0.32</td></tr>
+          <tr><td>100</td><td>0.18</td></tr>
+          <tr><td>1000</td><td>0.08</td></tr>
+        </tbody>
+      </table>
+
+      <p class="small">Fit van Genuchten to these points with initial guesses θs=0.45, θr=0.05, α=0.02, n=1.4. Use nonlinear solver for final parameters and compare predicted vs measured θ.</p>
+    </section>
+
+    <!-- 18 INSTRUMENTS DEEP -->
+    <section class="card">
+      <h2>18. Instrumentation & field sensors</h2>
+      <p class="muted">Field & lab instruments include tensiometers, dielectric moisture probes (e.g., TDR/FD), heat dissipation sensors, and soil water retention chambers. Each instrument has accuracy ranges and calibration needs.</p>
+      <ul>
+        <li>Tensiometer: accurate 0–80 kPa, requires water-filled tube — not for dry soils.</li>
+        <li>TDR/Capacitance probes: measure dielectric permittivity → infer θ, need calibration by soil type.</li>
+        <li>Dewpoint: measures very high suctions through vapor equilibrium.</li>
+      </ul>
+    </section>
+
+    <!-- 19 PRACTICAL TIPS -->
+    <section class="card">
+      <h2>19. Practical tips & pitfalls</h2>
+      <ul>
+        <li>Always test replicates — soils are heterogeneous.</li>
+        <li>Control temperature — suction depends on T.</li>
+        <li>Beware of air entrapment when wetting samples rapidly.</li>
+        <li>Use scanning curves for repeated wetting/drying cycles.</li>
+      </ul>
+    </section>
+
+    <footer>
+      © Neeraj Gupta — Detailed SWRC Notes · Generated for academic & project use
+    </footer>
+  </div>
+</body>
+</html>
+
