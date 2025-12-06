@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Soil–Water Retention Curve — Light Mint Theme</title>
+
+  <!-- Fonts & Chart -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- FULLSCREEN NAV OVERLAY -->
+  <div id="navOverlay" class="nav-overlay" aria-hidden="true">
+    <button id="closeNav" class="nav-close" aria-label="Close menu">&times;</button>
+    <nav class="nav-menu" role="navigation" aria-label="Main menu">
+      <a href="#about" class="nav-link" data-close>About</a>
+      <a href="#notes" class="nav-link" data-close>Details / Notes</a>
+      <a href="#soil" class="nav-link" data-close>Soil-Water Retention Data Table</a>
+      <a href="#soil" class="nav-link" data-close>Different Soils</a>
+      <a href="#interpretation" class="nav-link" data-close>Interpretation</a>
+      <a href="#chart" class="nav-link" data-close>Chart</a>
+    </nav>
+    <div class="nav-footer">
+      <small>© <strong>Neeraj Gupta</strong> — Mathematics & Computing</small>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="logo.png" alt="Site logo" class="logo">
+        <div>
+          <h2 class="site-title">Soil–Water Retention Curve</h2>
+          <h1 class="site-sub">Van Genuchten model · Unsaturated soil hydraulics</h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="openNav" class="hamburger" aria-label="Open menu">
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- decorative parallax band -->
+    <div class="hero-band"></div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-wrap">
+
+    <section id="about" class="card">
+      <h2>About the Van Genuchten Model</h2>
+      <p class="muted">The van Genuchten model relates matric suction (h) to volumetric water content (θ). It's widely used for unsaturated hydraulic property estimation.</p>
+      <div class="equation">
+        <code>θ(h) = θ<sub>r</sub> + (θ<sub>s</sub> − θ<sub>r</sub>) / (1 + (αh)<sup>n</sup>)<sup>m</sup></code>
+        <div class="muted small">where <code>m = 1 − 1/n</code></div>
+      </div>
+      <div>
+       <h3> Meaning of Each Parameter:-</h3>  
+       <p>A) θr — Residual Water Content
+Water left in soil even under very high suction
+Strongly adsorbed to particle surfaces
+Lower limit of water content.</p>
+      <p>B) θs — Saturated Water Content
+Maximum water soil can hold
+Equivalent to total porosity.</p>
+
+<p>C) α — Air-Entry Parameter (≈ 1 / AEV)
+Controls the suction at which soil begins to drain
+High α → drains earlier (coarse soils)
+Low α → drains later (fine soils)
+Units: 1/kPa</p>
+
+<p>D) n — Pore-Size Distribution Parameter
+Governs the steepness of the curve
+High n → steep curve → uniform pores (sands)
+Low n → gentle curve → variable pores (clays).
+</p>
+<p>
+E) m — Curve Shape Parameter
+</p>
+
+      </div>
+    </section>
+
+    <section id="notes" class="card">
+      <h2>Details / Notes</h2>
+      <ul>
+        <li><strong>α</strong> — inverse of air-entry suction.</li>
+        <li><strong>n</strong> — controls slope of retention curve.</li>
+        <li><strong>θr</strong>, <strong>θs</strong> — residual and saturated volumetric water contents.</li>
+        <li>Factors Affecting Soil Suction :-</li>
+        <div><table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; text-align: left;">
+    <thead style="background:#f2f2f2; font-weight:bold;">
+        <tr>
+            <th>Factor</th>
+            <th>Effect</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td><b>Soil texture</b></td>
+            <td>Clay > Silty > Sandy (finer soils → higher suction)</td>
+        </tr>
+        <tr>
+            <td><b>Pore size distribution</b></td>
+            <td>Smaller pores hold water more tightly</td>
+        </tr>
+        <tr>
+            <td><b>Soil structure</b></td>
+            <td>Aggregation increases suction</td>
+        </tr>
+        <tr>
+            <td><b>Water content</b></td>
+            <td>Lower water content → higher suction</td>
+        </tr>
+        <tr>
+            <td><b>Salts</b></td>
+            <td>More salts → higher osmotic suction</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+      </ul>
+     
+    </section>
+
+    <section id="soil" class="card">
+      <h2>Soil-Water Retention Data Table</h2>
+      <p>ψ = suction (kPa);
+θ = volumetric water content (cm³/cm³)</p>
+<div>
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; text-align: center;">
+    <thead style="background:#f2f2f2; font-weight:bold;">
+        <tr>
+            <th>ψ (kPa)</th>
+            <th>Sand</th>
+            <th>Loamy Sand</th>
+            <th>Sandy Loam</th>
+            <th>Loam</th>
+            <th>Silt Loam</th>
+            <th>Silty Clay</th>
+            <th>Clay</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>1</td><td>0.36</td><td>0.38</td><td>0.43</td><td>0.45</td><td>0.48</td><td>0.50</td><td>0.52</td>
+        </tr>
+        <tr>
+            <td>3</td><td>0.35</td><td>0.37</td><td>0.41</td><td>0.44</td><td>0.47</td><td>0.49</td><td>0.51</td>
+        </tr>
+        <tr>
+            <td>10</td><td>0.30</td><td>0.33</td><td>0.32</td><td>0.40</td><td>0.44</td><td>0.46</td><td>0.48</td>
+        </tr>
+        <tr>
+            <td>30</td><td>0.22</td><td>0.26</td><td>0.25</td><td>0.33</td><td>0.38</td><td>0.42</td><td>0.44</td>
+        </tr>
+        <tr>
+            <td>100</td><td>0.14</td><td>0.18</td><td>0.18</td><td>0.26</td><td>0.31</td><td>0.35</td><td>0.38</td>
+        </tr>
+        <tr>
+            <td>300</td><td>0.08</td><td>0.11</td><td>0.12</td><td>0.18</td><td>0.22</td><td>0.28</td><td>0.30</td>
+        </tr>
+        <tr>
+            <td>1000</td><td>0.04</td><td>0.05</td><td>0.08</td><td>0.12</td><td>0.15</td><td>0.20</td><td>0.22</td>
+        </tr>
+        <tr>
+            <td>10000</td><td>0.02</td><td>0.03</td><td>0.05</td><td>0.06</td><td>0.07</td><td>0.10</td><td>0.12</td>
+        </tr>
+    </tbody>
+</table>
+
+      </div>
+    </section>
+     </section>
+      
+       <section id="notes" class="card">
+       <h2>Different Soils</h2>
+      <div class="soil-grid">
+        <article><h3>Sandy</h3><p>Coarse grains — quick drainage, low retention.</p></article>
+        <article><h3>Silty</h3><p>Moderate retention with fine particles.</p></article>
+        <article><h3>Clay</h3><p>High retention, slow drainage.</p></article>
+        <article><h3>Loam</h3><p>Balanced — ideal for agriculture.</p></article>
+      </div>
+    </section>
+
+
+    <section class="card input-card">
+      <h2>Parameters</h2>
+      <div class="form-grid">
+        <label>α (Alpha)<input id="alpha" type="number" step="0.001" value="0.01"></label>
+        <label>n<input id="n" type="number" step="0.01" value="1.5"></label>
+        <label>θr</sub><input id="theta_r" type="number" step="0.01" value="0.05"></label>
+        <label>θs</sub><input id="theta_s" type="number" step="0.01" value="0.45"></label>
+      </div>
+      <div class="actions">
+        <button id="generateBtn" class="btn">Generate Curve</button>
+        <button id="downloadBtn" class="btn outline">Download Chart</button>
+      </div>
+    </section>
+
+    <section id="chart" class="card chart-card">
+      <h2>Soil–Water Retention Curve</h2>
+      <div class="canvas-wrap"><canvas id="curveChart" aria-label="Soil water retention curve" role="img"></canvas></div>
+    </section>
+
+    <section id="interpretation" class="card">
+      <h2>Interpretation</h2>
+      <p id="explanation" class="muted">Enter parameter values and click <strong>Generate Curve</strong>.</p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>Developed by <strong>Neeraj Gupta</strong> — Mathematics & Computing</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
